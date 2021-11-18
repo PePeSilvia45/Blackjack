@@ -9,19 +9,19 @@ public class PlayDeck {
     static public ArrayList<String> deck(){
     
         ArrayList<String> playDeck = new ArrayList<>();
-        playDeck.add("C2");playDeck.add("S2");playDeck.add("D2");playDeck.add("H2");
-        playDeck.add("C3");playDeck.add("S3");playDeck.add("D3");playDeck.add("H3");
-        playDeck.add("C4");playDeck.add("S4");playDeck.add("D4");playDeck.add("H4");
-        playDeck.add("C5");playDeck.add("S5");playDeck.add("D5");playDeck.add("H5");
-        playDeck.add("C6");playDeck.add("S6");playDeck.add("D6");playDeck.add("H6");
-        playDeck.add("C7");playDeck.add("S7");playDeck.add("D7");playDeck.add("H7");
-        playDeck.add("C8");playDeck.add("S8");playDeck.add("D8");playDeck.add("H8");
-        playDeck.add("C9");playDeck.add("S9");playDeck.add("D9");playDeck.add("H9");
-        playDeck.add("C10");playDeck.add("S10");playDeck.add("D10");playDeck.add("H10");
-        playDeck.add("CJ");playDeck.add("SJ");playDeck.add("DJ");playDeck.add("HJ");
-        playDeck.add("CQ");playDeck.add("SQ");playDeck.add("DQ");playDeck.add("HQ");
-        playDeck.add("CK");playDeck.add("SK");playDeck.add("DK");playDeck.add("HK");
-        playDeck.add("CA");playDeck.add("SA");playDeck.add("DA");playDeck.add("HA");
+        playDeck.add("2C");playDeck.add("2S");playDeck.add("2D");playDeck.add("2H");
+        playDeck.add("3C");playDeck.add("3S");playDeck.add("3D");playDeck.add("3H");
+        playDeck.add("4C");playDeck.add("4S");playDeck.add("4D");playDeck.add("4H");
+        playDeck.add("5C");playDeck.add("5S");playDeck.add("5D");playDeck.add("5H");
+        playDeck.add("6C");playDeck.add("6S");playDeck.add("6D");playDeck.add("6H");
+        playDeck.add("7C");playDeck.add("7S");playDeck.add("7D");playDeck.add("7H");
+        playDeck.add("8C");playDeck.add("8S");playDeck.add("8D");playDeck.add("8H");
+        playDeck.add("9C");playDeck.add("9S");playDeck.add("9D");playDeck.add("9H");
+        playDeck.add("10C");playDeck.add("10S");playDeck.add("10D");playDeck.add("10H");
+        playDeck.add("JC");playDeck.add("JS");playDeck.add("JD");playDeck.add("JH");
+        playDeck.add("QC");playDeck.add("QS");playDeck.add("QD");playDeck.add("QH");
+        playDeck.add("KC");playDeck.add("KS");playDeck.add("KD");playDeck.add("KH");
+        playDeck.add("AC");playDeck.add("AS");playDeck.add("AD");playDeck.add("AH");
         return playDeck;
     }
     static public ArrayList<String> deckScore(){
