@@ -1,7 +1,8 @@
 /*
  *  create a simple blackjack dealer with the hopes of developing play
     
-    if score over 11 the Ace(11) == 1
+    if score over 11 the Ace(11) == 1 !!!!
+    deck class cleaner using txt file and reading it in
 
  */
 package blackjack;
@@ -30,72 +31,16 @@ public class Blackjack {
         while (true) {
             System.out.println(playDeck.size());
             System.out.println(playDeckScore.size());
+            shuffle();
             deal();
-            if (playerScore == 21) {
-                System.out.println("Player Wins BLACKJACK!");
-                System.exit(0);
-            }
-
-            boolean stick = false;
             //players turn
-            while (stick == false) {
-                if (playerScore == 21) {
-                    stick = true;
-                }
-
-                System.out.print("Stick or Hit?\n>>");
-                String response = userIn.next();
-                if (response.equalsIgnoreCase("stick")) {
-                    System.out.print("Dealer has ");
-                    dealerHand.forEach(card -> {
-                        System.out.print(card + " ");
-                    });
-                    System.out.println("total: " + dealerScore);
-                    stick = true;
-                } else if (response.equalsIgnoreCase("hit")) {
-                    playerHit(playDeck.size());
-                    if (playerScore > 21) {
-                        System.out.println("BUST!");
-                        System.exit(0);
-                    }
-                }
-
-            }
-
-            //dealers turn 
-            stick = false;
-            while (stick == false) {
-                if (dealerScore < 16) {
-                    dealerHit(playDeck.size());
-                } else if (dealerScore > 21 && playerScore < 21) {
-                    System.out.println("Dealer bust Player Wins!");
-                    System.exit(0);
-                } else {
-                    stick = true;
+            while (true) {
+                if (playerStick()) {
+                    break;
                 }
             }
-            if (playerScore > 21 && dealerScore != 21) {
-                System.out.println("BUST!");
-                System.exit(0);
-            } else if (playerScore == 21 && dealerScore != 21) {
-                System.out.println("You Win");
-                System.exit(0);
-            } else if (playerScore == 21 && dealerScore == 21) {
-                System.out.println("Push");
-                System.exit(0);
-            }
-            if (playerScore == dealerScore) {
-                System.out.println("Push");
-                System.exit(0);
-            }
-            if (playerScore > dealerScore) {
-                System.out.println("Player Wins!");
-            } else {
-                System.out.println("Dealer Wins");
-            }
-
+            scoring();
             keepPlaying();
-
         }
     }
 
@@ -110,28 +55,8 @@ public class Blackjack {
         dealerDeal(cardsLeft);
     }
 
-    public static void playerDeal(int cardsLeft) {
-
-        int n = rnd.nextInt(cardsLeft);
-        playerHand.add(playDeck.get(n));
-        playDeck.remove(n);
-        playerScore = playerScore + Integer.valueOf(playDeckScore.get(n));
-        playDeckScore.remove(n);
-
-    }
-
-    public static void dealerDeal(int cardsLeft) {
-
-        int n = rnd.nextInt(cardsLeft);
-        dealerHand.add(playDeck.get(n));
-        playDeck.remove(n);
-        dealerScore = dealerScore + Integer.valueOf(playDeckScore.get(n));
-        playDeckScore.remove(n);
-
-    }
-
     public static void deal() {
-        
+
         dealer(playDeck.size());
 
         System.out.print("Player has ");
@@ -142,6 +67,31 @@ public class Blackjack {
 
         System.out.println("Dealer has ** " + dealerHand.get(1) + " ");
 
+    }
+
+    public static void playerDeal(int cardsLeft) {
+
+        int n = rnd.nextInt(cardsLeft);
+        playerHand.add(playDeck.get(n));
+        playDeck.remove(n);
+        playerScore = playerScore + Integer.valueOf(playDeckScore.get(n));
+        playDeckScore.remove(n);
+
+    }
+
+    public static boolean playerStick() {
+        if (playerScore == 21 || playerScore > 21) {
+            return true;
+        }
+        System.out.print("Stick or Hit?\n>>");
+        String response = userIn.next();
+        if (response.equalsIgnoreCase("stick")) {
+            dealerStick();
+            return true;
+        } else if (response.equalsIgnoreCase("hit")) {
+            playerHit(playDeck.size());
+        }
+        return false;
     }
 
     public static void playerHit(int cardsLeft) {
@@ -159,6 +109,32 @@ public class Blackjack {
 
     }
 
+    public static void dealerDeal(int cardsLeft) {
+
+        int n = rnd.nextInt(cardsLeft);
+        dealerHand.add(playDeck.get(n));
+        playDeck.remove(n);
+        dealerScore = dealerScore + Integer.valueOf(playDeckScore.get(n));
+        playDeckScore.remove(n);
+
+    }
+
+    public static void dealerStick() {
+        boolean stick = false;
+        while (stick == false) {
+            System.out.print("Dealer has ");
+            dealerHand.forEach(card -> {
+                System.out.print(card + " ");
+            });
+            System.out.println("total: " + dealerScore);
+            if (dealerScore < 16) {
+                dealerHit(playDeck.size());
+            } else {
+                stick = true;
+            }
+        }
+    }
+
     public static void dealerHit(int cardsLeft) {
         while (dealerScore < 16) {
             int n = rnd.nextInt(cardsLeft);
@@ -170,53 +146,73 @@ public class Blackjack {
             dealerHand.forEach(card -> {
                 System.out.print(card + " ");
             });
+            dealerScore = 22;
             System.out.println("total: " + dealerScore);
         }
 
     }
 
-    public static void keepPlaying(){
-        int keepPlaying = 0;
-            while (keepPlaying != 1 || keepPlaying != 2) {
-                System.out.println("Would you like to play again? (y / n) >>");
-                String response = userIn.next();
-                if (response.equalsIgnoreCase("y")) {
-                    
-                    for(String card : playerHand){
-                        discard.add(card);
-                    }
-                    playerHand.clear();
-                    
-                    for(String card : dealerHand){
-                        discard.add(card);
-                    }
-                    dealerHand.clear();
-                    
-                    playerScore = 0;
-                    dealerScore = 0;
-                    System.out.println(discard.size());
-                    
-                    break;
-                } else if (response.equalsIgnoreCase("n")) {
-                    System.out.println("Thankyou for Playing");
-                    System.exit(0);
-                } else {
-                    keepPlaying = 0;
-                }
-            }
-            
+    public static void scoring() {
+
+        if (playerScore == 21 && playerHand.size() == 2) {
+            System.out.println("Player Wins BLACKJACK!");
+        } else if (playerScore == dealerScore && playerScore <= 21 && dealerScore <= 21) {
+            System.out.println("Push");
+        } else if (playerScore > dealerScore && playerScore <= 21) {
+            System.out.println("Player Wins!");
+        } else if (playerScore < dealerScore && dealerScore <= 21) {
+            System.out.println("Dealer Wins");
+        } 
+        if (dealerScore > 21 && playerScore <= 21) {
+            System.out.println("Dealer Bust\nPlayer Wins");
+        }
     }
-   
+
+    public static void keepPlaying() {
+        int keepPlaying = 0;
+        while (keepPlaying != 1 || keepPlaying != 2) {
+            System.out.println("Would you like to play again? (y / n) >>");
+            String response = userIn.next();
+            if (response.equalsIgnoreCase("y")) {
+
+                for (String card : playerHand) {
+                    discard.add(card);
+                }
+                playerHand.clear();
+
+                for (String card : dealerHand) {
+                    discard.add(card);
+                }
+                dealerHand.clear();
+
+                playerScore = 0;
+                dealerScore = 0;
+                System.out.println(discard.size());
+
+                break;
+            } else if (response.equalsIgnoreCase("n")) {
+                System.out.println("Thankyou for Playing");
+                System.exit(0);
+            } else {
+                keepPlaying = 0;
+            }
+        }
+
+    }
+
     public static void shuffle() {
 
-        int i = 0;
-        while (i < 52) {
-            playDeck.add(discard.get(i));
-            i++;
+        if (playDeck.size() < 17 && playDeckScore.size() < 17) {
+            System.out.print("Shuffling...");
+            discard.clear();
+            playDeck.clear();
+            playDeck = PlayDeck.deck();
+            playDeckScore.clear();
+            playDeckScore = PlayDeck.deckScore();
+            System.out.println("Suffled");
+            System.out.println(playDeck.size());
+            System.out.println(playDeckScore.size());
         }
-        discard.clear();
-        System.out.println("Suffled");
-
     }
 
 }
