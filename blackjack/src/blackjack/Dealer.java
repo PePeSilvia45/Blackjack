@@ -22,7 +22,9 @@ public class Dealer {
     public static Scanner userIn = new Scanner(System.in);
     public static int playerScore = 0;
     public static int dealerScore = 0;
-
+    public static int playerAces = 0;
+    public static int dealerAces = 0;
+    
     public static void deal() {
 
         dealer(PlayDeck.playDeck.size());
@@ -48,48 +50,38 @@ public class Dealer {
     }
 
     public static void playerDeal(int cardsLeft) {
-
         int n = rnd.nextInt(cardsLeft);
-        playerScore = playerScore + Integer.valueOf(PlayDeck.playDeckScore.get(n));
-        playerHand.add(PlayDeck.playDeck.get(n));
+        String cardtxt = PlayDeck.playDeck.get(n);
+        String cardVal = PlayDeck.playDeckScore.get(n);
+        if ("11".equals(cardVal)) playerAces++;
+        playerScore = playerScore + Integer.valueOf(cardVal);
+        playerHand.add(cardtxt);
         PlayDeck.playDeck.remove(n);
         PlayDeck.playDeckScore.remove(n);
-
+        if (playerAces == 2) {
+            playerScore-=10;
+            playerAces--;
+        }
     }
 
     public static void dealerDeal(int cardsLeft) {
 
         int n = rnd.nextInt(cardsLeft);
-        dealerHand.add(PlayDeck.playDeck.get(n));
+        String cardtxt = PlayDeck.playDeck.get(n);
+        String cardVal = PlayDeck.playDeckScore.get(n);
+        if ("11".equals(cardVal)) dealerAces++;
+        dealerHand.add(cardtxt);
         PlayDeck.playDeck.remove(n);
-        dealerScore = dealerScore + Integer.valueOf(PlayDeck.playDeckScore.get(n));
+        dealerScore = dealerScore + Integer.valueOf(cardVal);
         PlayDeck.playDeckScore.remove(n);
-
-    }
-
-    public static void playerHit(int cardsLeft) {
-
-        int n = rnd.nextInt(cardsLeft);
-
-        playerHand.add(PlayDeck.playDeck.get(n));
-        PlayDeck.playDeck.remove(n);
-        if (playerScore > 10 && "11".equals(PlayDeck.playDeckScore.get(n))) {
-            playerScore = playerScore + 1;
-        } else {
-            playerScore = playerScore + Integer.valueOf(PlayDeck.playDeckScore.get(n));
+        if (dealerAces == 2) {
+            dealerScore-=10;
+            dealerAces--;
         }
-        PlayDeck.playDeckScore.remove(n);
-        System.out.print("\nPlayer hits : ");
-        System.out.print("[ " + playerHand.get(playerHand.size() - 1) + " ] ");
-        System.out.println("\nPlayer has");
-        playerHand.forEach(card -> {
-            System.out.print("[ " + card + " ] ");
-        });
-        System.out.println("\ntotal: " + playerScore);
     }
 
     public static boolean playerStick() throws InterruptedException {
-        
+
         if (playerScore == 21 || playerScore > 21) {
             return true;
         }
@@ -104,6 +96,33 @@ public class Dealer {
         return false;
     }
 
+    public static void playerHit(int cardsLeft) {
+        int n = rnd.nextInt(cardsLeft);
+        String cardtxt = PlayDeck.playDeck.get(n);
+        String cardVal = PlayDeck.playDeckScore.get(n);
+        if ("11".equals(cardVal)) playerAces++;
+        playerHand.add(cardtxt);
+        PlayDeck.playDeck.remove(n);
+        if (playerScore > 10 && "11".equals(cardVal)) {
+            playerScore = playerScore + 1;
+            playerAces--;
+        } else {
+            playerScore = playerScore + Integer.valueOf(cardVal);
+            if(playerScore > 11 && playerAces != 0) {
+                playerScore -= 10;
+                playerAces--;
+            }
+        }
+        PlayDeck.playDeckScore.remove(n);
+        System.out.print("\nPlayer hits : ");
+        System.out.print("[ " + playerHand.get(playerHand.size() - 1) + " ] ");
+        System.out.println("\nPlayer has");
+        playerHand.forEach(card -> {
+            System.out.print("[ " + card + " ] ");
+        });
+        System.out.println("\ntotal: " + playerScore);
+    }
+
     public static void dealerHit(int cardsLeft) throws InterruptedException {
         while (dealerScore < 16) {
             int n = rnd.nextInt(cardsLeft);
@@ -113,6 +132,10 @@ public class Dealer {
                 dealerScore = dealerScore + 1;
             } else {
                 dealerScore = dealerScore + Integer.valueOf(PlayDeck.playDeckScore.get(n));
+                if(dealerScore > 11 && dealerAces != 0) {
+                dealerScore -= 10;
+                dealerAces--;
+            }
             }
             PlayDeck.playDeckScore.remove(n);
             System.out.print("\ndealer hits : ");
@@ -120,7 +143,7 @@ public class Dealer {
             TimeUnit.SECONDS.sleep(1);
         }
         System.out.println();
-        System.out.println("Delaer Sticks");
+        System.out.println("Dealer Sticks");
         TimeUnit.MILLISECONDS.sleep(500);
     }
 

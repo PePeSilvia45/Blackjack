@@ -47,6 +47,8 @@ public class GameEnd {
 
                 Dealer.playerScore = 0;
                 Dealer.dealerScore = 0;
+                Dealer.playerAces = 0;
+                Dealer.dealerAces = 0;
 
                 break;
             } else if (response.equalsIgnoreCase("n")) {
