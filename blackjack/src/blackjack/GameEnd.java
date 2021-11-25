@@ -11,20 +11,34 @@ package blackjack;
  */
 public class GameEnd {
 
+    public static boolean playerWin = false;
+    public static boolean playerBlackJack = false;
+    public static boolean push = false;
+    
     public static void scoring() {
 
         if (Dealer.playerScore == 21 && Dealer.playerHand.size() == 2) {
+            playerBlackJack = true;
             System.out.println("Player Wins BLACKJACK!");
+            Betting.showWinnings();
         } else if (Dealer.playerScore == Dealer.dealerScore && Dealer.playerScore <= 21 && Dealer.dealerScore <= 21) {
-            System.out.println("Push");
+            push = true;
+            System.out.println("Push\n");
+            Betting.showWinnings();
         } else if (Dealer.playerScore > Dealer.dealerScore && Dealer.playerScore <= 21) {
+            playerWin = true;
             System.out.println("Player Wins!");
+            Betting.showWinnings();
         } else if (Dealer.playerScore < Dealer.dealerScore && Dealer.dealerScore <= 21) {
             System.out.println("Dealer Wins");
+            Betting.showWinnings();
         } else if (Dealer.playerScore > 21) {
             System.out.println("Player Bust");
+            Betting.showWinnings();
         } else if (Dealer.dealerScore > 21 && Dealer.playerScore <= 21) {
             System.out.println("Dealer Bust\nPlayer Wins");
+            playerWin = true;
+            Betting.showWinnings();
         }
     }
 
@@ -53,6 +67,7 @@ public class GameEnd {
                 break;
             } else if (response.equalsIgnoreCase("n")) {
                 System.out.println("Thankyou for Playing");
+                Betting.showBalance();
                 System.exit(0);
             } else {
                 keepPlaying = 0;

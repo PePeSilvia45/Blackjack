@@ -26,7 +26,9 @@ public class Dealer {
     public static int dealerAces = 0;
     
     public static void deal() {
-
+        
+        Betting.showBalance();
+        Betting.bet();
         dealer(PlayDeck.playDeck.size());
         System.out.println("Dealer has\n[ ** ] [ " + dealerHand.get(1) + " ]");
         System.out.println("\nPlayer has");
@@ -85,6 +87,7 @@ public class Dealer {
         if (playerScore == 21 || playerScore > 21) {
             return true;
         }
+        Betting.showBet();
         System.out.print("\nStick or Hit?\n>>");
         String response = userIn.next();
         if (response.equalsIgnoreCase("stick")) {
