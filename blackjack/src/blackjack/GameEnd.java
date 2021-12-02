@@ -14,9 +14,10 @@ public class GameEnd {
     public static boolean playerWin = false;
     public static boolean playerBlackJack = false;
     public static boolean push = false;
-    
+
     public static void scoring() {
 
+        
         if (Dealer.playerScore == 21 && Dealer.playerHand.size() == 2) {
             playerBlackJack = true;
             System.out.println("Player Wins BLACKJACK!");
@@ -40,12 +41,14 @@ public class GameEnd {
             playerWin = true;
             Betting.showWinnings();
         }
+
     }
 
     public static void keepPlaying() {
         int keepPlaying = 0;
         while (keepPlaying != 1 || keepPlaying != 2) {
-            System.out.println("\nWould you like to play again? (y / n) >>");
+            System.out.println("\nWould you like to play again? (y / n)");
+            System.out.print(">>");
             String response = Dealer.userIn.next();
             if (response.equalsIgnoreCase("y")) {
 

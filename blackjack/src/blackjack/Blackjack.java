@@ -19,20 +19,22 @@ public class Blackjack {
     public static void main(String[] args) throws InterruptedException {
 
         Betting.buyIn();
-        
+
         while (true) {
-            
+
             GameEnd.shuffle();
             Dealer.deal();
-            //players turn
+
             while (true) {
                 if (Dealer.playerStick()) {
                     break;
                 }
             }
+
             GameEnd.scoring();
             GameEnd.keepPlaying();
+
         }
     }
-    
+
 }
